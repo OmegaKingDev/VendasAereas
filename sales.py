@@ -33,6 +33,7 @@ def retornar():
         while res not in ["S", "N"]:
             print("letra invalida!")
             res = input("Quer voltar? (S/N)").upper()
+            
 
 Fvoos()   
 retornar()
