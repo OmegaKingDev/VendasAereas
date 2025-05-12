@@ -50,15 +50,17 @@ def Fvenda():
             while compra < 1 or compra > 2:
                 print("numero invalido!")
                 compra = int(input("Escolha o metodo de pagamento: "))
+            print("insira os dados do cartão: ")
+            m = input("Nome no cartão: ")
+            n = input("numero: ")
+            v = input("validade: ")
+            c = input("codigo de segurança: ")
             if compra == 1:
-                print("insira os dados do cartão: ")
-                m = input("Nome no cartão: ")
-                n = input("numero: ")
-                v = input("validade: ")
-                c = input("codigo de segurança: ")
                 parcela = int(input("deseja parcelar em quantas vezes? MAXIMO DE 24x\n"))
                 valorFinal = voos["preço"][indice] / parcela
-                print(f"perfeito!! seu voo custará {valorFinal}, sendo {parcela}x de {voos["preço"][indice]}")
+                print(f"perfeito!! sua viagem de {voos['destino'][indice]} para {voos['lugares'][indice]} que custará {valorFinal:.02f}, sendo {parcela}x de {voos["preço"][indice]} foi agendada! Aproveite suas férias.")
+            else:
+                print(f"Parabéns! sua viagem de {voos['destino'][indice]} para {voos['lugares'][indice]} por {voos['preço'][indice]} foi agendada! Aproveite suas férias.")
 
             return cpf, nome, telefone
       
