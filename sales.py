@@ -49,7 +49,7 @@ def Fvenda():
             compra = int(input("Escolha o metodo de pagamento: "))
             while compra < 1 or compra > 2:
                 print("numero invalido!")
-                compra = input("Escolha o metodo de pagamento: ")
+                compra = int(input("Escolha o metodo de pagamento: "))
             if compra == 1:
                 print("insira os dados do cartão: ")
                 m = input("Nome no cartão: ")
@@ -61,26 +61,7 @@ def Fvenda():
                 print(f"perfeito!! seu voo custará {valorFinal}, sendo {parcela}x de {voos["preço"][indice]}")
 
             return cpf, nome, telefone
-
-#passageiros = {"CPF":[], "nome":[],"telefone":[]}
-
-def retornar():
-    res = "S"
-    while res == "S":
-        print(voos["numero"])
-        indice = int(input("escolha o N° do voo para ver as informações: "))
-        indice -=1
-        print("origem:", voos["origem"][indice])
-        print("destino:", voos["destino"][indice])
-        print("escalas:", voos["escalas"][indice])
-        print("preço: R$",voos["preço"][indice])
-        print("lugares:", voos["lugares"][indice])
-        res = input("Quer voltar? (S/N)").upper()
-        while res not in ["S", "N"]:
-            print("letra invalida!")
-            res = input("Quer voltar? (S/N)").upper()
-            
+      
 
 Fvoos()
 Fvenda()   
-#retornar()
