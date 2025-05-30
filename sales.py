@@ -1,52 +1,52 @@
-voos = {"numero":[], "origem":[], "destino":[], "escala":[],"preço":[], "lugares":[]}
+voos = {}
 passageiros = {"nome":[], "CPF":[], "telefone":[]}
-escalas = []
-escala = []
 
 def Fvoos():
     Nvoos = int(input("insira quantos voos serão cadastrados: "))
 
     for i in range(1, Nvoos + 1):
-        voos["numero"].append(i)
+        vooDados = []
+        escala = [] 
+        escalas = []
         origem = (input(f"digite a origem do voo N°{i}: "))
-        voos["origem"].append(origem)
         destino = (input(f"\nInsira o destino do voo N°{i}: "))
-        voos["destino"].append(destino)
         Infoescalas = int(input("\nInsira a quantidade de escalas: "))
-        escala = []
+        escala = []           
+        vooDados.append(origem)
+        vooDados.append(destino)
+        vooDados.append(Infoescalas)
         if Infoescalas > 0:
             for b in range (Infoescalas):
-                escala.append(input(f"insira oo lugar da escala: "))
-            escalas.append(escala)               
-        else:
+                escala.append(input(f"insira o lugar da escala: "))
             escalas.append(escala)
-            voos['escala'].append(0)
-        escala = []
+            vooDados.append(escalas)    
 
-
-        print(escalas)
         preco = float(input("\nInsira o preço da passagem: "))
-        voos["preço"].append(preco)
         lugares = int(input("\nInsira a quantidade de lugares disponiveis: ")) 
-        voos["lugares"].append(lugares)
-    
+        vooDados.append(preco)
+        vooDados.append(lugares)
+        voos[i] = vooDados
+        print(voos)
+        
     return voos, origem, destino, escalas, preco, escalas, escala
 
 def Fvenda():
     res = "N"
     while res == "N":
-        print(voos["numero"])
+        print(f"Código dos voos disponiveis: ")      
+        for i in voos.keys():
+            print(f"- {i}")
         indice = int(input("escolha o N° do voo para ver as informações: "))
-        indice -=1
-        print("Codigo de voo:", voos["numero"][indice])
-        print("origem:", voos["origem"][indice])
-        print("destino:", voos["destino"][indice])
-        if  0 in [escalas[indice]]:
+        print("origem:", {voos[indice][0]})
+        print("destino:", {voos[indice][1]})
+        if voos[indice][2] == 0:
             print("Não há escala.")
+            print("preço: R$",voos[indice][3])
+            print("lugares:", voos[indice][4])
         else:
-            print(f"escalas: {escalas[indice]}")
-        print("preço: R$",voos["preço"][indice])
-        print("lugares:", voos["lugares"][indice])
+            print(f"escalas: {voos[indice][3]}")
+            print("preço: R$",voos[indice][4])
+            print("lugares:", voos[indice][5])
 
         res = input("\nDeseja comprar esta passagem? (S para seguir com a compra) (N para voltar)\n").upper()
         while res not in ["S", "N"]:
