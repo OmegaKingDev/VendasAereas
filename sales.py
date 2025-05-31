@@ -43,7 +43,7 @@ def Fvenda():
             return #
                 
         else:
-            print(f"Código dos voos disponiveis: ")      
+            print(f"Código dos voos cadastrados: ")      
         for i in voos.keys():
             print(f"- {i}")
         b = input("Deseja continuar ou voltar para o menu principal? (C para continuar) (V para voltar)\n").upper()
@@ -53,16 +53,34 @@ def Fvenda():
             return #
         else:
             indice = int(input("escolha o N° do voo para ver as informações: "))
-            print("origem:", {voos[indice][0]})
-            print("destino:", {voos[indice][1]})
+            while indice not in voos.keys():
+                print("Esse codigo não existe!")
+                indice = int(input("escolha o N° do voo para ver as informações: "))
             if voos[indice][2] == 0:
+                print("origem:", {voos[indice][0]})
+                print("destino:", {voos[indice][1]})
                 print("Não há escala.")
                 print("preço: R$",voos[indice][3])
                 print("lugares:", voos[indice][4])
+                if voos[indice][4] == 0:
+                    print("este voo já está lotado! Não é possivel comprá-lo")
+                    w = (input("(S) para voltar para o menu principal\n")).upper()  
+                    while w != "S":
+                        w = (input("Valor invalido! (S) para voltar para o menu principal\n")).upper()
+                    return #
+                
             else:
+                print("origem:", {voos[indice][0]})
+                print("destino:", {voos[indice][1]})
                 print(f"escalas: {voos[indice][3]}")
                 print("preço: R$",voos[indice][4])
                 print("lugares:", voos[indice][5])
+                if voos[indice][5] == 0:
+                    print("este voo já está lotado! Não é possivel comprá-lo")
+                    w = (input("(S) para voltar para o menu principal\n")).upper()  
+                    while w != "S":
+                        w = (input("Valor invalido! (S) para voltar para o menu principal\n")).upper()
+                    return #
 
             res = input("\nDeseja comprar esta passagem? (S para seguir com a compra) (N para voltar)\n").upper()
             while res not in ["S", "N"]:
@@ -80,6 +98,17 @@ def Fvenda():
                 dados.append(telefone)
                 passageiros[cpf] = dados
 
+                qt = int(input("Quantas passagens deseja comprar?: "))
+                if voos[indice][2] == 0:
+                    while qt > voos[indice][4] or qt <= 0:
+                        print("A quantidade de passagens que você está tentando comprar não está disponivel.")
+                        qt = int(input("Quantas passagens deseja comprar?\n "))
+                else:
+                    while qt > voos[indice][5] or qt <= 0:
+                        print("A quantidade de passagens que você está tentando comprar não está disponivel.")
+                        qt = int(input("Quantas passagens deseja comprar?\n "))
+                      
+
                 print("\n Como deseja pagar?")
                 print("1 - Credito")
                 print("2 - debito")
@@ -94,11 +123,38 @@ def Fvenda():
                 c = input("codigo de segurança: ")
                 if compra == 1:
                     if voos[indice][2] == 0:
+                        a = voos[indice][3] 
+                        voos[indice][3] *= qt
                         parcela = int(input("deseja parcelar em quantas vezes? MAXIMO DE 24x\n"))
                         valorFinal = voos[indice][3]/ parcela
-                        print(f"perfeito!! sua viagem de {voos[indice][0]} para {voos[indice][1]} que custará {valorFinal:.02f}, sendo {parcela}x de {voos[indice][3]} foi agendada! Aproveite suas férias.")
+                        print(f"perfeito!! sua viagem de {voos[indice][0]} para {voos[indice][1]} que custará R${valorFinal:.02f}, sendo {parcela}x de R${voos[indice][3]} foi agendada! Aproveite suas férias.")
+                        voos[indice][4] = voos[indice][4] - qt
+                        voos[indice][3] = a
+                    
+                    else:
+                        a = voos[indice][4]
+                        voos[indice][4] *= qt
+                        parcela = int(input("deseja parcelar em quantas vezes? MAXIMO DE 24x\n"))
+                        valorFinal = voos[indice][4]/ parcela
+                        print(f"perfeito!! sua viagem de {voos[indice][0]} para {voos[indice][1]} que custará R${valorFinal:.02f}, sendo {parcela}x de R${voos[indice][4]} foi agendada! Aproveite suas férias.")
+                        voos[indice][5] = voos[indice][5] - qt
+                        voos[indice][4] = a
+
+
+                elif voos[indice][2] == 0:
+                    a = voos[indice][3]
+                    voos[indice][3] *= qt
+                    print(f"Parabéns! sua viagem de {voos[indice][0]} para {voos[indice][1]} por R${voos[indice][3]} foi agendada! Aproveite suas férias.")
+                    voos[indice][4] = voos[indice][4] - qt
+                    voos[indice][3] = a
+
                 else:
-                    print(f"Parabéns! sua viagem de {voos[indice][0]} para {voos[indice][1]} por {voos[indice][4]} foi agendada! Aproveite suas férias.")
+                    a = voos[indice][3]
+                    voos[indice][4] *= qt
+                    print(f"Parabéns! sua viagem de {voos[indice][0]} para {voos[indice][1]} por R${voos[indice][4]} foi agendada! Aproveite suas férias.")
+                    voos[indice][5] = voos[indice][5] - qt
+                    voos[indice][3] = a
+
     return cpf, nome, telefone
 
 def consultaP():
@@ -108,10 +164,10 @@ def consultaP():
     
 loop = "N"
 while loop == "N":
-    print("---- MENU ----")
+    print("--------------- MENU ---------------")
     print(f"1 - Cadastrar voo")
     print(f"2 - Consultar e comprar passagem")
-    print(f"2 - Lista de passageiros")
+    print(f"3 - Lista de passageiros")
     opcao = int(input("\nEscolha uma das opções acima: "))
     if opcao == 1:
         Fvoos()
