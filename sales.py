@@ -1,7 +1,6 @@
 voos = {}
 passageiros = {}
 
-#"nome":[], "CPF":[], "telefone":[]
 def Fvoos():
     Nvoos = int(input("insira quantos voos serão cadastrados: "))
 
@@ -147,80 +146,101 @@ def Fvenda():
 
 def consultaP():
     encontrados = False
-    res = "N"
-    while res == "N":
-        if not voos:
-            print("Não há voos disponiveis no momento\n")
-            w = (input("(S) para voltar para o menu principal\n")).upper()  
-            while w != "S":
-                w = (input("Valor invalido! (S) para voltar para o menu principal\n")).upper()
-            return #
+    if not voos:
+        print("Não há voos disponiveis no momento\n")
+        w = (input("(S) para voltar para o menu principal\n")).upper()  
+        while w != "S":
+            w = (input("Valor invalido! (S) para voltar para o menu principal\n")).upper()
+        return #
                 
-        else:
-            print(f"Código dos voos cadastrados: ")      
-        for i in voos.keys():
-            print(f"- {i}")
-        b = input("Deseja continuar ou voltar para o menu principal? (C para continuar) (V para voltar)\n").upper()
-        while b not in ["C", "V"]:
-            b = input("Escolha invalida! Deseja continuar ou voltar para o menu principal? (C para continuar) (V para voltar)\n").upper()
-        if b == "V":
-            return #
-        else:
-            indice = int(input("escolha o N° do voo para ver os passageiros: "))
-            while indice not in voos.keys():
-                print("Esse codigo não existe!")
-                indice = int(input("escolha o N° do voo para ver as informações: "))
+    else:
+        print(f"Código dos voos cadastrados: ")      
+    for i in voos.keys():
+        print(f"- {i}")
+    b = input("Deseja continuar ou voltar para o menu principal? (C para continuar) (V para voltar)\n").upper()
+    while b not in ["C", "V"]:
+        b = input("Escolha invalida! Deseja continuar ou voltar para o menu principal? (C para continuar) (V para voltar)\n").upper()
+    if b == "V":
+        return #
+    else:
+        indice = int(input("escolha o N° do voo para ver os passageiros: "))
         while indice not in voos.keys():
-            print("Esse código não existe!")
-            indice = int(input("Escolha o N° do voo para ver os passageiros: "))
+            print("Esse codigo não existe!")
+            indice = int(input("escolha o N° do voo para ver as informações: "))
+    while indice not in voos.keys():
+        print("Esse código não existe!")
+        indice = int(input("Escolha o N° do voo para ver os passageiros: "))
     
-        print(f"\nPassageiros do voo {indice}:")
+    print(f"\nPassageiros do voo {indice}:")
 
-        for cpf, x in passageiros.items():
-            if indice in x:
-                print(f"- CPF: {cpf} | Nome: {x[0]} | Telefone: {x[1]}")
-                encontrados = True
+    for cpf, x in passageiros.items():
+        if indice in x:
+            print(f"- CPF: {cpf} | Nome: {x[0]} | Telefone: {x[1]}")
+            encontrados = True
 
-        if not encontrados:
-            print("Não há passageiros neste voo.")
+    if not encontrados:
+        print("Não há passageiros neste voo.")
+        return #
+    else:
+        p = input("Deseja remover um passageiro? (S/N)").upper()
+        while p not in ["S","N"]:
+            p = input("Escolha invalida! Deseja remover um passageiro? (S/N)").upper()
+
+
+    if p == "S":
+        cpf = int(input("Digite o CPF do passageiro que deseja remover: "))
+
+        while cpf not in passageiros:
+            print("Passageiro não encontrado.")
+            cpf = int(input("Digite o CPF do passageiro que deseja remover: "))
+        passageiros[cpf].remove(indice)
+        if voos[indice][2] == 0:
+            voos[indice][4] += 1
             return #
         else:
-            p = input("Deseja remover um passageiro? (S/N)").upper()
-            while p not in ["S","N"]:
-                p = input("Escolha invalida! Deseja remover um passageiro? (S/N)").upper()
+            voos[indice][5] += 1
+            return #
+
+def vooM():
+    if not voos:
+        print("Não há voos cadastrados.")
+        return
+
+    p = list(voos.keys())[0]
+    menorEscala = voos[p][2]  
+
+    for codigo, x in voos.items():
+        if x[2] < menorEscala:
+            menorEscala = x[2]
 
 
-        if p == "S":
-            cpf = int(input("Digite o CPF do passageiro que deseja remover: "))
-
-            while cpf not in passageiros:
-                print("Passageiro não encontrado.")
-                cpf = int(input("Digite o CPF do passageiro que deseja remover: "))
-            passageiros[cpf].remove(indice)
-            if voos[indice][2] == 0:
-                voos[indice][4] += 1
-                return #
+    for codigo, x in voos.items():
+        if x[2] == menorEscala:
+            print(f"\nVoo {codigo}")
+            print(f"Origem: {x[0]}")
+            print(f"Destino: {x[1]}")
+            if menorEscala == 0:
+                print(f"Preço: R${x[3]}")
+                print(f"Lugares: {x[4]}")
             else:
-                voos[indice][5] += 1
-                return #
-
-
-
-
-
-
-
+                print(f"Escalas: {x[3]}")
+                print(f"Preço: R${x[4]}")
+                print(f"Lugares: {x[5]}")
+    return #
     
 loop = "N"
 while loop == "N":
     print("--------------- MENU ---------------")
     print(f"1 - Cadastrar voo")
     print(f"2 - Consultar e comprar passagem")
-    print(f"3 - Lista de passageiros")
+    print(f"3 - voos com menor escala")
+    print(f"4 - Lista de passageiros")
     opcao = int(input("\nEscolha uma das opções acima: "))
     if opcao == 1:
         Fvoos()
     elif opcao == 2:
         Fvenda()
     elif opcao == 3:
+        vooM()
+    elif opcao == 4:
         consultaP()
