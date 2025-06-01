@@ -141,7 +141,7 @@ def Fvenda():
             passageiros[cpf].append(indice)    
             voos[indice][6] += 1
     if res == "N":
-        return #
+        return 
     return cpf, nome, telefone
 
 
@@ -334,7 +334,7 @@ while loop == "N":
     if opcao == 1:
         Fvoos()
     elif opcao == 2:
-        op = int(input("\n- 1 consutar voo pelo codigo\n- 2 consultar voo por origem\n - 3 consultar voo por destino\n"))
+        op = int(input("\n- 1 consutar voo pelo codigo\n- 2 consultar voo por origem\n- 3 consultar voo por destino\n"))
         while op not in [1, 2 ,3]:
             print("Valor invalido! tente novamente.")
             op = int(input("\n- 1 consutar voo pelo codigo\n- 2 consultar voo por origem\n- 3 consultar voo por destino\n"))
